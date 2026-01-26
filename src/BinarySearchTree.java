@@ -1,3 +1,12 @@
+/*
+BinarySearchTree.java
+
+Instantiable binary search tree class for CS 400 @ University of Wisconsin-Madison.
+Designed around the provided BinaryNode.java class and SortedCollection.java interface.
+
+K. Almizyed, 01/24/2026
+*/
+
 public class BinarySearchTree<T extends Comparable<T>> implements SortedCollection<T> {
     
     protected BinaryNode<T> root = null;
@@ -95,7 +104,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
 
     /**
      * Performs a pre-order traversal, counting each node visited until all subtrees have been visited.
-     * Returns the total number of nodes from the root node.
+     * @return the total number of nodes from the root node.
      * When the provided subtree is null, this method returns false.
      */
     private int sizeHelper(BinaryNode<T> subtree) {
@@ -122,26 +131,170 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
     }
 
     /**
-     * Removes all values and duplicates from the collection.
+     * Clears tree of all nodes by setting root to null.
+     * Java garbage collector should delete all other nodes automatically.
      */
     public void clear() {
-        if (root != null && size() > 0) {
-            clearHelper(root);
-            root = null;
+        root = null;
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------//
+    //                                                          TEST METHODS                                                       //
+    //-----------------------------------------------------------------------------------------------------------------------------//
+
+    /**
+     * Runs the size() method.
+     * Returns true if size() == 9, otherwise returns false.
+     */
+    public boolean test1() {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+
+        int[] data = {50, 30, 70, 40, 10, 60, 20, 55, 65};
+
+        for (int i = 0; i < data.length; i++){
+            tree.insert(data[i]);
+        }
+
+        if (tree.size() == 9) {
+            return true;
+        } else {
+            return false;
         }
     }
 
     /**
-     * Performs a pre-order traversal to clear the entire tree. Severs connections between parent and child nodes. 
-     * Java garbage collection should handle any memory leaks due to severed nodes still holding data.
-     * When the provided subtree is null, this method returns false.
+     * Generates a new tree and then clears it using tree.clear().
+     * Returns true if tree.isEmpty() == true, otherwise returns false.
      */
-    private void clearHelper(BinaryNode<T> subtree){
-        if (subtree != null) {
-            clearHelper(subtree.getLeft());
-            clearHelper(subtree.getRight());
-            subtree.setLeft(null);
-            subtree.setRight(null);
+    public boolean test2() {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+
+        int[] data = {50, 30, 70, 40, 10};
+
+        for (int i = 0; i < data.length; i++){
+            tree.insert(data[i]);
         }
+
+        tree.clear();
+
+        return tree.isEmpty();
+    }
+
+    /**
+     * Generates a new tree and checks to see if the tree contains 20.
+     * Returns true if 20 is found, otherwise returns false.
+     */
+    public boolean test3() {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+
+        int[] data = {50, 30, 30, 70, 40, 40, 60, 20, 65};
+
+        for (int i = 0; i < data.length; i++){
+            tree.insert(data[i]);
+        }
+
+        return tree.contains(20);
+    }
+
+    /**
+     * Generates a new tree and checks to see if the tree contains "CS400".
+     * Returns true if "CS400" is found, otherwise returns false.
+     */
+    public boolean test4() {
+        BinarySearchTree<String> tree = new BinarySearchTree<>();
+
+        String[] data = {"Hello", "world!", "CS400", "testing"};
+
+        for (String curData : data) {
+            tree.insert(curData);
+        }
+
+        return tree.contains("CS400");
+    }
+
+    /**
+     * Generates a new tree and checks to see if the tree contains "Uh oh".
+     * Returns true if "Uh oh" is found, otherwise returns false.
+     */
+    public boolean test5() {
+        BinarySearchTree<String> tree = new BinarySearchTree<>();
+
+        String[] data = {"Hello", "world!", "CS400", "testing"};
+
+        for (String curData : data) {
+            tree.insert(curData);
+        }
+
+        return tree.contains("Uh oh");
+    }
+
+    /**
+     * Generates a new tree and checks to see if the tree contains 50, the root node.
+     * Returns true if 50 is found, otherwise returns false.
+     */
+    public boolean test6() {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+
+        int[] data = {50, 30, 70, 60, 20, 65};
+
+        for (int i = 0; i < data.length; i++){
+            tree.insert(data[i]);
+        }
+
+        return tree.contains(50);
+    }
+
+    /**
+     * Generates a new tree and checks to see if the tree contains 70, a right child.
+     * Returns true if 70 is found, otherwise returns false.
+     */
+    public boolean test7() {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+
+        int[] data = {50, 30, 70};
+
+        for (int i = 0; i < data.length; i++){
+            tree.insert(data[i]);
+        }
+
+        return tree.contains(70);
+    }
+
+    public static void main(String[] args) {
+        /** 
+         * According to assignment instructions, test methods must be public and non-static
+         * so a tree must be instantiated to call them, even though I instantiated the trees for
+         * each test method at the beginning of the function body.
+        */ 
+
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+
+        // If tree.size() == 9, then test1 will return true, otherwise it will return false.
+        System.out.println("Running test1(), should return true: ");
+        System.out.println("Test 1 = " + tree.test1());
+
+        // Empties the tree, then checks if isEmpty() works correctly.
+        System.out.println("\nRunning test2(), should return true: ");
+        System.out.println("Test 2 = " + tree.test2());
+
+        // Generates a new tree and looks for 20.
+        System.out.println("\nRunning test3(), should return true: ");
+        System.out.println("Test 3 = " + tree.test3());
+
+        // Generates a new tree and looks for "CS400".
+        System.out.println("\nRunning test4(), should return true: ");
+        System.out.println("Test 4 = " + tree.test4());
+
+        // Generates a new tree and looks for "Uh oh".
+        System.out.println("\nRunning test5(), should return false: ");
+        System.out.println("Test 5 = " + tree.test5());
+
+        // Generates a new tree and looks for root node 50.
+        System.out.println("\nRunning test6(), should return true: ");
+        System.out.println("Test 6 = " + tree.test6());
+
+        // Generates a new tree and looks for right child 70.
+        System.out.println("\nRunning test7(), should return true: ");
+        System.out.println("Test 7 = " + tree.test7());
     }
 }
