@@ -90,6 +90,33 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
         return false;
     }
 
+    public BinaryNode<T> get(Comparable<T> find) {
+        if (root == null) {
+            return null;
+        } else {
+            return getHelper(find, root);
+        }
+    }
+
+    private BinaryNode<T> getHelper(Comparable<T> find, BinaryNode<T> subtree) {
+        if (subtree == null) {
+            return null;
+        }
+
+        if (find.compareTo(subtree.getData()) == 0)  {
+            return subtree;
+        } else {
+            if (find.compareTo(subtree.getData()) < 0) {
+                return getHelper(find, subtree.getLeft());
+            }
+            if (find.compareTo(subtree.getData()) > 0) {
+                return getHelper(find, subtree.getRight());
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Counts the number of values in the collection, with each duplicate value
      * being counted separately within the value returned.
@@ -136,5 +163,13 @@ public class BinarySearchTree<T extends Comparable<T>> implements SortedCollecti
      */
     public void clear() {
         root = null;
+    }
+
+    @Override
+    public String toString() {
+        if (root == null) {
+            return "[ ]";
+        }
+        return root.toLevelOrderString();
     }
 }

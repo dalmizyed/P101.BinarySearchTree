@@ -26,6 +26,8 @@ public class BSTRotation<T extends Comparable<T>> extends BinarySearchTree<T> {
                 BinaryNode<T> rightGrandchild = child.getRight();
                 parent.setLeft(rightGrandchild);
                 rightGrandchild.setUp(parent);
+            } else {
+                parent.setLeft(null);
             }
 
             // Swap child and parent.
@@ -40,6 +42,8 @@ public class BSTRotation<T extends Comparable<T>> extends BinarySearchTree<T> {
                 BinaryNode<T> leftGrandchild = child.getLeft();
                 parent.setRight(leftGrandchild);
                 leftGrandchild.setUp(parent);
+            } else {
+                parent.setRight(null);
             }
 
             // Swap child and parent.
@@ -48,6 +52,7 @@ public class BSTRotation<T extends Comparable<T>> extends BinarySearchTree<T> {
 
         } else {
             // Child isn't actually a subtree of parent, do nothing.
+            System.err.println("ROTATION ERROR: Child is not a subtree of parent.");
             return;
         }
 
@@ -65,6 +70,7 @@ public class BSTRotation<T extends Comparable<T>> extends BinarySearchTree<T> {
         // If parent was originally root, then child should become root.
         if (parentWasRoot) {
             root = child;
+            child.setUp(null);
         }
     }
 
@@ -263,6 +269,90 @@ public class BSTRotation<T extends Comparable<T>> extends BinarySearchTree<T> {
         }
     }
 
+    public boolean retest1() {
+        BSTRotation<Integer> tree = new BSTRotation<>();
+
+        int[] data = {4, 2, 1, 3, 6, 5, 7};
+
+        for (int dataPoint : data) {
+            tree.insert(dataPoint);
+        }
+
+        System.out.println("Retest init: " + tree);
+
+        if (tree.contains(3) && tree.contains(2)) {
+            tree.rotate(tree.get(3), tree.get(2));
+        }
+
+        System.out.println("Retest final: " + tree);
+
+        return true;
+    }
+
+    public boolean retest2() {
+        BSTRotation<Integer> tree = new BSTRotation<>();
+
+        int[] data = {4, 2, 1, 3, 6, 5, 7};
+
+        for (int dataPoint : data) {
+            tree.insert(dataPoint);
+        }
+
+        System.out.println("Retest init: " + tree);
+
+        if (tree.contains(6) && tree.contains(6)) {
+            tree.rotate(tree.get(5), tree.get(6));
+        }
+
+        System.out.println("Retest final: " + tree);
+
+        return true;
+    }
+
+    public boolean retest3() {
+        BSTRotation<Integer> tree = new BSTRotation<>();
+
+        int[] data = {2, 4};
+
+        for (int dataPoint : data) {
+            tree.insert(dataPoint);
+        }
+
+        System.out.println("Retest init: " + tree);
+
+        if (tree.contains(2) && tree.contains(4)) {
+            tree.rotate(tree.get(4), tree.get(2));
+
+            System.out.println("4's parent: " + tree.get(4).getUp());
+        }
+
+        System.out.println("Retest final: " + tree);
+
+        return true;
+    }
+
+    public boolean retest4() {
+        BSTRotation<Integer> tree = new BSTRotation<>();
+
+        int[] data = {1, 2, 4};
+
+        for (int dataPoint : data) {
+            tree.insert(dataPoint);
+        }
+
+        System.out.println("Retest init: " + tree);
+
+        if (tree.contains(2) && tree.contains(4)) {
+            tree.rotate(tree.get(4), tree.get(2));
+
+            System.out.println("4's parent: " + tree.get(4).getUp());
+        }
+
+        System.out.println("Retest final: " + tree);
+
+        return true;
+    }
+
     public static void main(String[] args) {
         BSTRotation<Integer> tester = new BSTRotation<>();
 
@@ -277,5 +367,10 @@ public class BSTRotation<T extends Comparable<T>> extends BinarySearchTree<T> {
         if (tester.test1() && tester.test2() && tester.test3() && tester.test4() && tester.test5() && tester.test6()) {
             System.out.println("\n--> All tests passed successfully!\n");
         }
+
+        System.out.println("retest1: " + tester.retest1());
+        System.out.println("retest2: " + tester.retest2());
+        System.out.println("retest3: " + tester.retest3());
+        System.out.println("retest4: " + tester.retest4());
     }
 }
